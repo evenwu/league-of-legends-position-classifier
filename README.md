@@ -1,2 +1,3 @@
-# league-of-legends-position-classifier
+# How Player Stats Reveal Their Position
+## Analysis on 2025 League of Legends esports match data
 This is a placeholder
