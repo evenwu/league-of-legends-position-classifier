@@ -71,9 +71,9 @@ The cleaned dataframe now has 100530 rows × 9 columns
 ### Univariate Analysis
 
 Let's look at some distributions of relevant columns:
-<iframe src="assets/kills_hist.html" width=600 height=450 frameBorder=0></iframe> <iframe src="assets/deaths_hist.html" width=600 height=450 frameBorder=0></iframe> <iframe src="assets/assists_hist.html" width=600 height=450 frameBorder=0></iframe>
+<iframe src="assets/kills_hist.html" width=630 height=420 frameBorder=0></iframe> <iframe src="assets/deaths_hist.html" width=630 height=420 frameBorder=0></iframe> <iframe src="assets/assists_hist.html" width=630 height=420 frameBorder=0></iframe>
 
-
+It looks like the distributions of K/D/A are all right-skewed, with the bulk of the data clustered on the lower end of the axis. Notice that the average kill count and death count are about the same; this makes sense because for every kill, there has to be a death. Meanwhile, the average assist count is significantly higher because every kill can generate up to four assists if all five team members contributed to eliminating the target.
 
 
 
