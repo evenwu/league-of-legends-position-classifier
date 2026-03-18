@@ -15,11 +15,11 @@ To a new audience, competitive League of Legends may look chaotic on the surface
 
 - **Mid Laner**: Control the center of the map, engage in quick fights, roam to assist other lanes
 
-- **Bot Laner**: aka the ADC (Attack Damage Carry), deals sustained damage, build level and item advantage
+- **Bot Laner**: aka the ADC (Attack Damage Carry), deals sustained damage, build level advantage
 
 - **Support**: Protect and assist ADC, provide vision and utility
 
-[^1]: [source from redbull.com](https://www.redbull.com/int-en/league-of-legends-roles-explained)
+[^1]: https://www.redbull.com/int-en/league-of-legends-roles-explained
 <img width="700" height="498" alt="image" src="https://github.com/user-attachments/assets/95610568-3a0c-42ed-9f77-f498af12e74f" />
 
 This project will investigate the question:
@@ -66,12 +66,14 @@ Below are the first 5 rows of `lol_cleaned`:
 | bot        |         1592 |       1 |        3 |         1 |         0.238801  |     0.137567  |                479.209 | 0.3769 |
 | sup        |         1592 |       0 |        3 |         2 |         0.0891171 |     0.0832419 |                474.535 | 3.0905 |
 
+The cleaned dataframe now has 100530 rows × 9 columns
 
+### Univariate Analysis
 
-
-
-
-
+Let's look at some distributions of relevant columns
+<iframe src="assets/kills_hist.html" width=800 height=600 frameBorder=0></iframe>
+<iframe src="assets/deaths_hist.html" width=800 height=600 frameBorder=0></iframe>
+<iframe src="assets/assists_hist.html" width=800 height=600 frameBorder=0></iframe>
 <iframe src="assets/KDA_bar.html" width=800 height=600 frameBorder=0></iframe>
 
 
