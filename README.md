@@ -71,7 +71,7 @@ The cleaned dataframe now has 100530 rows × 9 columns
 ### Univariate Analysis
 
 Let's look at some distributions of relevant columns:
-<iframe src="assets/kills_hist.html" width=800 height=600 frameBorder=0></iframe> <iframe src="assets/deaths_hist.html" width=800 height=600 frameBorder=0></iframe> <iframe src="assets/assists_hist.html" width=800 height=600 frameBorder=0></iframe>
+<iframe src="assets/kills_hist.html" width=600 height=450 frameBorder=0></iframe> <iframe src="assets/deaths_hist.html" width=600 height=450 frameBorder=0></iframe> <iframe src="assets/assists_hist.html" width=600 height=450 frameBorder=0></iframe>
 
 
 
