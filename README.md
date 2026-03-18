@@ -58,45 +58,58 @@ Every 12 rows in the dataset corresponds to one match, with 10 rows representing
 
 Below are the first 5 rows of `lol_cleaned`:
 
-| position   |   gamelength |   kills |   deaths |   assists |   earnedgoldshare |   damageshare |   damagetakenperminute |   vspm |
-|:-----------|-------------:|--------:|---------:|----------:|------------------:|--------------:|-----------------------:|-------:|
-| top        |         1592 |       1 |        2 |         1 |         0.289981  |     0.40197   |                681.219 | 0.6407 |
-| jng        |         1592 |       0 |        3 |         1 |         0.15852   |     0.0989769 |                906.972 | 1.093  |
-| mid        |         1592 |       1 |        2 |         0 |         0.223581  |     0.278244  |                366.859 | 0.7538 |
-| bot        |         1592 |       1 |        3 |         1 |         0.238801  |     0.137567  |                479.209 | 0.3769 |
-| sup        |         1592 |       0 |        3 |         2 |         0.0891171 |     0.0832419 |                474.535 | 3.0905 |
+|    | position   |   gamelength |   kills |   deaths |   assists |   earnedgoldshare |   damageshare |   damagetakenperminute |   vspm |
+|---:|:-----------|-------------:|--------:|---------:|----------:|------------------:|--------------:|-----------------------:|-------:|
+|  0 | top        |         1592 |       1 |        2 |         1 |         0.289981  |     0.40197   |                681.219 | 0.6407 |
+|  1 | jng        |         1592 |       0 |        3 |         1 |         0.15852   |     0.0989769 |                906.972 | 1.093  |
+|  2 | mid        |         1592 |       1 |        2 |         0 |         0.223581  |     0.278244  |                366.859 | 0.7538 |
+|  3 | bot        |         1592 |       1 |        3 |         1 |         0.238801  |     0.137567  |                479.209 | 0.3769 |
+|  4 | sup        |         1592 |       0 |        3 |         2 |         0.0891171 |     0.0832419 |                474.535 | 3.0905 |
 
 The cleaned dataframe now has 100530 rows × 9 columns
 
 ### Univariate Analysis
 
 Let's look at some distributions of relevant columns:
-<iframe src="assets/kills_hist.html" width=630 height=420 frameBorder=0></iframe> <iframe src="assets/deaths_hist.html" width=630 height=420 frameBorder=0></iframe> <iframe src="assets/assists_hist.html" width=630 height=420 frameBorder=0></iframe>
 
-It looks like the distributions of K/D/A are all right-skewed, with the bulk of the data clustered on the lower end of the axis. Notice that the average kill count and death count are about the same; this makes sense because for every kill, there has to be a death. Meanwhile, the average assist count is significantly higher because every kill can generate up to four assists if all five team members contributed to eliminating the target.
+<iframe src="assets/kills_hist.html" width=630 height=420 frameBorder=0></iframe> 
+<iframe src="assets/deaths_hist.html" width=630 height=420 frameBorder=0></iframe> 
+<iframe src="assets/assists_hist.html" width=630 height=420 frameBorder=0></iframe>
 
+It looks like the distributions of the `kills`, `deaths`, and `assists` columns (K/D/A) are all right-skewed, with the bulk of the data clustered on the lower end of the axis. Notice that the average kill count and death count are about the same; this makes sense because for every kill, there has to be a death. Meanwhile, the average assist count is significantly higher because every kill can generate up to four assists if all five team members contributed to eliminating the target.
 
+### Bivariate Analysis:
 
+With the knowledge of how a player's position can affect their stats like K/D/A, we need to explore the relationship between the `position` column and the K/D/A columns: 
 
+<iframe src="assets/KDA_bar.html" width=630 height=420 frameBorder=0></iframe>
 
+This bar graph clearly shows how K/D/A differ between positions. Bot laners will generally get more kills, and supports get significantly more assists and fewer kills.
 
-<iframe src="assets/KDA_bar.html" width=800 height=600 frameBorder=0></iframe>
+K/D/A is not the only thing we should consider for a player's post-game stats. There are a lot of aspects of the game that K/D/A cannot fully capture. Here are two more major stats: `earnedgoldshare` and `damageshare`. Both are measured as a proportion (0~1) within the player's own team.
 
+<iframe src="assets/gold_hist.html" width=630 height=420 frameBorder=0></iframe>
+<iframe src="assets/damage_hist.html" width=630 height=420 frameBorder=0></iframe>
 
+Both of these statistics seem to have bimodal distributions, as a result of the playstyle of support players being provided value through utility, vision, and crowd control, not through gaining gold and scaling damage.
 
+<iframe src="assets/gold_damage_scatter.html" width=630 height=420 frameBorder=0></iframe>
 
+There is also a positive linear relationship between 'earnedgoldshare' and 'damageshare', which is expected because League of Legends’ entire economy and combat system is built so that gold enables damage, and damage earns more gold.
 
+### Interesting Aggregates:
 
+We can organize all of our columns of interest and create a grouped table. Examine their aggregate **means** for every position
 
+| position   |   gamelength |   kills |   deaths |   assists |   earnedgoldshare |   damageshare |   damagetakenperminute |   vspm |
+|:-----------|-------------:|--------:|---------:|----------:|------------------:|--------------:|-----------------------:|-------:|
+| top        |      1921.56 |    3.12 |     3.26 |      5.63 |              0.21 |          0.23 |                 913.15 |   0.89 |
+| jng        |      1921.56 |    3.42 |     3.39 |      8.10 |              0.2  |          0.17 |                1198.86 |   1.36 |
+| mid        |      1921.56 |    3.94 |     3.00 |      6.73 |              0.23 |          0.26 |                 637.16 |   0.98 |
+| bot        |      1921.56 |    4.93 |     2.77 |      6.10 |              0.26 |          0.27 |                 519.92 |   1.00 |
+| sup        |      1921.56 |    0.88 |     3.92 |     11.03 |              0.10 |          0.08 |                 566.02 |   3.39 |
 
-
-
-
-
-
-
-
-
+The table summarizes average performance metrics by position. Instead of looking at thousands of individual rows, this grouped view highlights the general patterns that distinguish each role. This table also highlights that `earnedgoldshare` and `damageshare` are also correlated within each position.
 
 ---
 
