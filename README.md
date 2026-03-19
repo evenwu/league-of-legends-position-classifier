@@ -84,7 +84,7 @@ With the knowledge of how a player's position can affect their stats like K/D/A,
 
 <iframe src="assets/KDA_bar.html" width=630 height=420 frameBorder=0></iframe>
 
-This bar graph clearly shows how K/D/A differ between positions. Bot laners will generally get more kills, and supports get significantly more assists and fewer kills.
+This bar graph clearly shows how K/D/A differ between positions. Bot laners generally get more kills, and supports get significantly more assists and fewer kills.
 
 K/D/A is not the only thing we should consider for a player's post-game stats. There are a lot of aspects of the game that K/D/A cannot fully capture. Here are two more major stats: `earnedgoldshare` and `damageshare`. Both are measured as a proportion (0~1) within the player's own team.
 
@@ -104,7 +104,7 @@ We can organize all of our columns of interest and create a grouped table. Exami
 | position   |   gamelength |   kills |   deaths |   assists |   earnedgoldshare |   damageshare |   damagetakenperminute |   vspm |
 |:-----------|-------------:|--------:|---------:|----------:|------------------:|--------------:|-----------------------:|-------:|
 | top        |      1921.56 |    3.12 |     3.26 |      5.63 |              0.21 |          0.23 |                 913.15 |   0.89 |
-| jng        |      1921.56 |    3.42 |     3.39 |      8.10 |              0.2  |          0.17 |                1198.86 |   1.36 |
+| jng        |      1921.56 |    3.42 |     3.39 |      8.10 |              0.20 |          0.17 |                1198.86 |   1.36 |
 | mid        |      1921.56 |    3.94 |     3.00 |      6.73 |              0.23 |          0.26 |                 637.16 |   0.98 |
 | bot        |      1921.56 |    4.93 |     2.77 |      6.10 |              0.26 |          0.27 |                 519.92 |   1.00 |
 | sup        |      1921.56 |    0.88 |     3.92 |     11.03 |              0.10 |          0.08 |                 566.02 |   3.39 |
@@ -115,19 +115,59 @@ The table summarizes average performance metrics by position. Instead of looking
 
 ## Assessment of Missingness
 
-Here's what a Markdown table looks like. Note that the code for this table was generated _automatically_ from a DataFrame, using
+### MNAR Analysis
 
-```py
-print(counts[['Quarter', 'Count']].head().to_markdown(index=False))
-```
+None of our columns of interest contains missing values, but in the original dataset, the `playerid` column has 1586 missing values, which we believe are most likely MNAR (Missing Not At Random). In professional esports, well‑established players almost always have registered IDs, so a missing player ID probably corresponds to a less‑documented player, such as a substitute. The probability of being missing depends on the identity of the player. To potentially reclassify this as MAR(Missing At Random), we would want additional metadata such as a “is_substitute” column.
 
-| Quarter     |   Count |
-|:------------|--------:|
-| Fall 2020   |       3 |
-| Winter 2021 |       2 |
-| Spring 2021 |       6 |
-| Summer 2021 |       4 |
-| Fall 2021   |      55 |
+### Missingness Dependency
+
+Looking at other columns with missing values, an interesting phenomenon is that sometimes a team will skip one of their five bans. Resulting in missing values in that column.
+
+In League of Legends, a **ban** is when a team removes a champion from the pool during the draft phase so that neither team can pick it for that game. Bans are used to limit the opponent’s strategy, so missing a ban can put a team at a competitive disadvantage.
+
+The column `ban5` (the fifth ban) has 610 missing values. We analyze the dependency of the missingness of this column on other columns.
+
+First, we test to see if `ban5` is MAR depending on `victory` (True / False) with hypotheses:
+
+- H0: The distribution of 'victory' when 'ban5' is missing is the same as the distribution of 'victory' when 'ban5' is not missing
+
+- H1: The distribution of 'victory' when 'ban5' is missing is different from the distribution of 'victory' when 'ban5' is not missing
+
+We use TVD (Total Variation Distance) as our test statistic
+
+Below is the observed distribution of `victory` when `ban5` is missing and not missing.
+
+| victory   |   ban5_missing = False |   ban5_missing = True |
+|:----------|-----------------------:|----------------------:|
+| False     |               0.499299 |              0.614754 |
+| True      |               0.500701 |              0.385246 |
+
+After performing a permutation test, the observed TVD (0.12) has a p-value of 0. Below shows the empirical distribution of the TVD for this test.
+
+<iframe src="assets/tvd1.html" width=630 height=420 frameBorder=0></iframe>
+
+Since the p-value is less than the 0.05 significance level, we reject the null hypothesis, and there is strong evidence that missing ban5 is related to whether a team wins or loses. Therefore, the missingness in the `ban5` column does depend on `victory`.
+
+Now we test to see if `ban5` is MAR depending on `side` (Red / Blue) with hypotheses:
+
+- H0: The distribution of 'side' when 'ban5' is missing is the same as the distribution of 'side' when 'ban5' is not missing
+
+- H1: The distribution of 'side' when 'ban5' is missing is different from the distribution of 'side' when 'ban5' is not missing
+
+Again, we use TVD as our test statistic
+
+Below is the observed distribution of `side` when `ban5` is missing and not missing.
+
+| side   |   ban5_missing = False |   ban5_missing = True |
+|:-------|-----------------------:|----------------------:|
+| Blue   |                0.50005 |              0.491803 |
+| Red    |                0.49995 |              0.508197 |
+
+After performing a permutation test, the observed TVD (0.01) has a p-value of 0.732. Below shows the empirical distribution of the TVD for this test.
+
+<iframe src="assets/tvd2.html" width=630 height=420 frameBorder=0></iframe>
+
+Since the p-value is greater than 0.05, we fail to reject the null hypothesis, and this test does not provide evidence that missing ban5 is related to whether a team is on the red side or blue side. Therefore, the missingness in the `ban5` column does depend on `side`.
 
 ---
 
