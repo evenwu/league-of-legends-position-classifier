@@ -265,7 +265,7 @@ weighted avg       0.71      0.72      0.71     25133
 
 The final model achieves an overall accuracy of 0.72 and a macro‑averaged F1 score of 0.71, a significant improvement from the baseline model.
 
-We can see that support and junglers are distinguishable, with supports classified perfectly on our testing set. Bot and top laners can be identified fairly well, while mid laners remain the hardest role to predict due to overlapping stat profiles. 
+We can see that support and junglers are distinguishable, with supports classified almost perfectly in our testing set. Bot and top laners can be identified fairly well, while mid laners remain the hardest role to predict due to overlapping stat profiles. 
 
 Below is the coefficient table of the final model:
 
