@@ -201,7 +201,7 @@ To further answer our question and find the statistics that most clearly disting
 
 - **Type**: multiclass classification
 
-- **Response variable**: 'position' (top, jng, mid, bot, sup)
+- **Response variable**: `position` (top, jng, mid, bot, sup)
 
 - **Time of prediction**: post-game (all data avaliable)
 
@@ -213,7 +213,7 @@ We begin by splitting the dataset into training and testing sets using a 75/25 s
 
 For the baseline model, we use three quantitative features: `kills`, `deaths`, and `assists`. These are the most fundamental post-game statistics and provide a simple starting point for prediction. Before fitting the model, we standardize these features using `StandardScaler()`.
 
-We choose multinomial logistic regression as our classifier because it is highly interpretable: the coefficients directly indicate how each statistic influences the probability of a player belonging to each role. This also aligns with this project's goal of understanding which statistics can distinguish positions.
+We choose **multinomial logistic regression** as our classifier because it is highly interpretable: the coefficients directly indicate how each statistic influences the probability of a player belonging to each role. This also aligns with this project's goal of understanding which statistics can distinguish positions.
 
 After training the model on the training set and evaluating it on the test set, we obtain the following classification report:
 ```
