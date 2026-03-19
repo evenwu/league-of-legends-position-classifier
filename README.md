@@ -267,6 +267,7 @@ The final model achieves an overall accuracy of 0.72 and a macro‑averaged F1 s
 
 We can see that support and junglers are distinguishable, with supports classified perfectly on our testing set. Bot and top laners can be identified fairly well, while mid laners remain the hardest role to predict due to overlapping stat profiles. 
 
+Below is the coefficient table of the final model:
 
 |     |   kills |   deaths |   assists |   damageshare |   damagetakenperminute |   vspm |
 |:----|--------:|---------:|----------:|--------------:|-----------------------:|-------:|
@@ -290,6 +291,8 @@ Overall, the coefficient patterns show that vision score is the single most dist
 
 ## Fairness Analysis
 
+The duration of the esports matches in our dataset ranges from 18 minutes to 60 minutes. With the average `gamelength` being 32 minutes. We perform a fairness analysis and test whether the model performs equally well on short (below‑average length) and long (above‑average length) matches.
+
 - H0: Our model is fair. Its accuracy for longer matches and shorter matches is roughly the same, and any differences are due to random chance
 
 - H1: Our model is unfair. Its accuracy for shorter matches is higher than its precision for longer matches.
@@ -297,3 +300,7 @@ Overall, the coefficient patterns show that vision score is the single most dist
 test stat: difference in accuracy (short - long)
 
 <iframe src="assets/accdiff.html" width=630 height=420 frameBorder=0></iframe>
+
+The permutation test produced a p‑value of 0; none of the shuffled datasets showed a difference as large as the one observed. We reject the null hypothesis. There is evidence that the model is less accurate on long matches and appears to be unfair.
+
+Longer matches may be harder for the model because player statistics become more homogenized as games drag on. In extended games, every role tends to accumulate more vision, more damage, and more damage taken simply due to time, which reduces the contrast between positions.
