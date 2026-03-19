@@ -30,7 +30,7 @@ This project will investigate the question:
 
 If post‑game stats do differ meaningfully by position, then we can identify which metrics are most distinctive for each role — helping players understand what truly defines their position and make more informed decisions about how to improve.
 
-We have access to a dataset from [Oracle's Elixir](https://oracleselixir.com/tools/downloads) containing information about over 10,000 League of Legends esports matches from 2025. The dataset contains 120636 rows, and the relevant columns are:
+We have access to a dataset from [Oracle's Elixir](https://oracleselixir.com/tools/downloads) containing information about over 10000 League of Legends esports matches from 2025. The dataset contains 120636 rows, and the relevant columns are:
 
 - `position` — The in‑game role the player occupied (top, jng, mid, bot, sup).
 
