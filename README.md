@@ -203,7 +203,97 @@ To further answer our question and find the statistics that most clearly disting
 
 - **Time of prediction**: post-game (all data avaliable)
 
-- **Evaluation metric**: macro F1 score (forces the model to be good across all five roles, not just the easy ones)
+- **Evaluation metric**: macro F1 score average (forces the model to be good across all five roles, not just the easy ones)
 
+## Baseline Model
+
+We begin by splitting the dataset into training and testing sets using a 75/25 split to ensure that model evaluation is performed on unseen data.
+
+For the baseline model, we use three quantitative features: `kills`, `deaths`, and `assists`. These are the most fundamental post-game statistics and provide a simple starting point for prediction. Before fitting the model, we standardize these features using `StandardScaler()`.
+
+We choose multinomial logistic regression as our classifier because it is highly interpretable: the coefficients directly indicate how each statistic influences the probability of a player belonging to each role. This also aligns with this project's goal of understanding which statistics can distinguish positions.
+
+After training the model on the training set and evaluating it on the test set, we obtain the following classification report:
+```
+              precision    recall  f1-score   support
+
+         bot       0.38      0.45      0.41      5027
+         jng       0.32      0.29      0.31      5026
+         mid       0.27      0.07      0.11      5027
+         sup       0.60      0.80      0.68      5026
+         top       0.29      0.38      0.33      5027
+
+    accuracy                           0.40     25133
+   macro avg       0.37      0.40      0.37     25133
+weighted avg       0.37      0.40      0.37     25133
+```
+With a macro‑averaged F1 score of 0.37, the baseline model leaves substantial room for improvement. Using only K/D/A allows the classifier to identify supports reasonably well, likely because supports have a distinct death and assist ratio, but these three features alone are not enough to reliably distinguish the other four roles.
 
 ---
+
+## Final Model
+
+To improve the model, first try adding more features. `damageshare`, `damagetakenperminute`, and `vspm` are good features to add because they reflect the intentional structure of the game. Each role in League of Legends has a unique combination of these responsibilities, and these features can create more separable clusters in feature space than K/D/A alone.
+
+- **Damage Share**: who outputs damage
+
+- **Damage Taken per minute**: who absorbs pressure
+
+- **Vision Score per minute**: who controls infromation
+
+We intentionally exclude `goldshare` from the model because it is highly correlated with `damageshare`. We only keep one of these features to avoid multicollinearity occurring and preserve the interpretability of the coefficients.
+
+Since all of our added features are quantitative, we continue to use `StandardScaler()` to transform the data.
+
+After preprocessing, we tune the logistic regression model by performing a grid search over the hyperparameter `C` using `GridSearchCV()`. This allows us to identify the level of regularization that maximizes macro‑averaged F1 performance on cross‑validation. The search selects `C=100` as the optimal value.
+
+Below are the classification report and confusion matrix for the final model:
+```
+              precision    recall  f1-score   support
+
+         bot       0.62      0.71      0.66      5027
+         jng       0.85      0.85      0.85      5026
+         mid       0.45      0.39      0.42      5027
+         sup       1.00      1.00      1.00      5026
+         top       0.65      0.63      0.64      5027
+
+    accuracy                           0.72     25133
+   macro avg       0.71      0.72      0.71     25133
+weighted avg       0.71      0.72      0.71     25133
+```
+<iframe src="assets/cm.html" width=630 height=420 frameBorder=0></iframe>
+
+The final model achieves an overall accuracy of 0.72 and a macro‑averaged F1 score of 0.71, a significant improvement from the baseline model.
+
+We can see that support and junglers are distinguishable, with supports classified perfectly on our testing set. Bot and top laners can be identified fairly well, while mid laners remain the hardest role to predict due to overlapping stat profiles. 
+
+
+|     |   kills |   deaths |   assists |   damageshare |   damagetakenperminute |   vspm |
+|:----|--------:|---------:|----------:|--------------:|-----------------------:|-------:|
+| bot |    0.51 |     0.40 |     -0.19 |          1.37 |                  -2.66 |  -2.61 |
+| jng |    0.18 |    -0.64 |      0.01 |         -1.06 |                   2.74 |   1.58 |
+| mid |    0.02 |    -0.08 |      0.22 |          1.30 |                  -0.69 |  -2.66 |
+| sup |   -0.49 |     1.01 |      0.08 |         -2.38 |                  -0.75 |   6.93 |
+| top |   -0.21 |    -0.70 |     -0.12 |          0.77 |                   1.36 |  -3.24 |
+
+Because all features were standardized, the coefficients are directly comparable. A large positive coefficient means the model strongly associates that feature with the role; a negative coefficient means the opposite. Some interpretations we can have are:
+
+- A large positive coefficient on vision score for SUP means the model strongly associates a high vision score with support play.
+
+- A negative coefficient on damage taken for BOT reflects that they avoid damage relative to others.
+
+- Many K/D/A coefficients are relatively close to 0, reflecting their limited ability to distinguish positions.
+
+Overall, the coefficient patterns show that vision score is the single most distinguishing statistic across roles, with damage share and damage taken also contributing strongly.
+
+---
+
+## Fairness Analysis
+
+- H0: Our model is fair. Its accuracy for longer matches and shorter matches is roughly the same, and any differences are due to random chance
+
+- H1: Our model is unfair. Its accuracy for shorter matches is higher than its precision for longer matches.
+
+test stat: difference in accuracy (short - long)
+
+<iframe src="assets/accdiff.html" width=630 height=420 frameBorder=0></iframe>
