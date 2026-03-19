@@ -130,9 +130,9 @@ The column `ban5` (the fifth ban) has 610 missing values. We analyze the depende
 
 First, we test to see if `ban5` is MAR depending on `victory` (True / False) with hypotheses:
 
-- H0: The distribution of `victory` when `ban5` is missing is the same as the distribution of 'victory' when 'ban5' is not missing
+- H~0~ (Null hypothesis): The distribution of `victory` when `ban5` is missing is the same as the distribution of `victory` when `ban5` is not missing
 
-- H1: The distribution of `victory` when `ban5` is missing is different from the distribution of 'victory' when 'ban5' is not missing
+- H~1~ (Alternative hypothesis): The distribution of `victory` when `ban5` is missing is different from the distribution of `victory` when `ban5` is not missing
 
 We use TVD (Total Variation Distance) as our test statistic
 
@@ -151,9 +151,9 @@ Since the p-value is less than the 0.05 significance level, we reject the null h
 
 Now we test to see if `ban5` is MAR depending on `side` (Red / Blue) with hypotheses:
 
-- H0: The distribution of 'side' when 'ban5' is missing is the same as the distribution of `side` when `ban5` is not missing
+- H0: The distribution of `side` when `ban5` is missing is the same as the distribution of `side` when `ban5` is not missing
 
-- H1: The distribution of 'side' when 'ban5' is missing is different from the distribution of `side` when `ban5` is not missing
+- H1: The distribution of `side` when `ban5` is missing is different from the distribution of `side` when `ban5` is not missing
 
 Again, we use TVD as our test statistic
 
@@ -168,7 +168,7 @@ After performing a permutation test, the observed TVD (0.01) has a p-value of 0.
 
 <iframe src="assets/tvd2.html" width=630 height=420 frameBorder=0></iframe>
 
-Since the p-value is greater than the 0.05 significance level, we fail to reject the null hypothesis, and this test does not provide evidence that missing ban5 is related to whether a team is on the red side or blue side. Therefore, the missingness in the `ban5` column does depend on `side`.
+Since the p-value is greater than the 0.05 significance level, we fail to reject the null hypothesis, and this test does not provide evidence that missing ban5 is related to whether a team is on the red side or blue side. Therefore, the missingness in the `ban5` column does not depend on `side`.
 
 ---
 
@@ -204,7 +204,7 @@ To further answer our question and find the statistics that most clearly disting
 
 - **Time of prediction**: post-game (all data avaliable)
 
-- **Evaluation metric**: macro F1 score average (forces the model to be good across all five roles, not just the easy ones)
+- **Evaluation metric**: macro‑averaged F1 score (forces the model to be good across all five roles)
 
 ## Baseline Model
 
@@ -266,7 +266,7 @@ weighted avg       0.71      0.72      0.71     25133
 
 The final model achieves an overall accuracy of 0.72 and a macro‑averaged F1 score of 0.71, a significant improvement from the baseline model.
 
-We can see that support and junglers are distinguishable, with supports classified almost perfectly in our testing set. Bot and top laners can be identified fairly well, while mid laners remain the hardest role to predict due to overlapping stat profiles. 
+We can see that supports and junglers are most distinguishable, with supports classified almost perfectly in our testing set. Bot and top laners can be identified fairly well, while mid laners remain the hardest role to predict due to overlapping stat profiles. 
 
 Below is the coefficient table of the final model:
 
@@ -292,7 +292,7 @@ Overall, the coefficient patterns show that vision score is the single most dist
 
 ## Fairness Analysis
 
-The duration of the esports matches in our dataset ranges from 18 minutes to 60 minutes. With the average `gamelength` being 32 minutes. We perform a fairness analysis and test whether the model performs equally well on short (below‑average length) and long (above‑average length) matches.
+The duration of the competitive matches in our dataset ranges from 18 minutes to 60 minutes. With the average `gamelength` being 32 minutes. We perform a fairness analysis and test whether the model performs equally well on short (below‑average length) and long (above‑average length) matches.
 
 - H0: Our model is fair. Its accuracy for longer matches and shorter matches is roughly the same, and any differences are due to random chance
 
