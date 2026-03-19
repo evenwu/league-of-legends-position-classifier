@@ -192,3 +192,12 @@ After performing a permutation test, the observed test statistic (0.82) has a p-
 Since the p-value is less than the 0.05 significance level, we reject the null hypothesis, and there is strong evidence suggesting that supports have a higher average death count than non-supports
 
 ---
+
+## Framing a Prediction Problem
+
+
+
+
+
+
+---
