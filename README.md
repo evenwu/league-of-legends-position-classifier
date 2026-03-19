@@ -304,3 +304,5 @@ test stat: difference in accuracy (short - long)
 The permutation test produced a p‑value of 0; none of the shuffled datasets showed a difference as large as the one observed. We reject the null hypothesis. There is evidence that the model is less accurate on long matches and appears to be unfair.
 
 Longer matches may be harder for the model because player statistics become more homogenized as games drag on. In extended games, every role tends to accumulate more vision, more damage, and more damage taken simply due to time, which reduces the contrast between positions.
+
+---
