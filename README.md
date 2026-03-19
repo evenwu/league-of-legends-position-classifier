@@ -129,9 +129,9 @@ The column `ban5` (the fifth ban) has 610 missing values. We analyze the depende
 
 First, we test to see if `ban5` is MAR depending on `victory` (True / False) with hypotheses:
 
-- H0: The distribution of 'victory' when 'ban5' is missing is the same as the distribution of 'victory' when 'ban5' is not missing
+- H0: The distribution of `victory` when `ban5` is missing is the same as the distribution of 'victory' when 'ban5' is not missing
 
-- H1: The distribution of 'victory' when 'ban5' is missing is different from the distribution of 'victory' when 'ban5' is not missing
+- H1: The distribution of `victory` when `ban5` is missing is different from the distribution of 'victory' when 'ban5' is not missing
 
 We use TVD (Total Variation Distance) as our test statistic
 
@@ -150,9 +150,9 @@ Since the p-value is less than the 0.05 significance level, we reject the null h
 
 Now we test to see if `ban5` is MAR depending on `side` (Red / Blue) with hypotheses:
 
-- H0: The distribution of 'side' when 'ban5' is missing is the same as the distribution of 'side' when 'ban5' is not missing
+- H0: The distribution of 'side' when 'ban5' is missing is the same as the distribution of `side` when `ban5` is not missing
 
-- H1: The distribution of 'side' when 'ban5' is missing is different from the distribution of 'side' when 'ban5' is not missing
+- H1: The distribution of 'side' when 'ban5' is missing is different from the distribution of `side` when `ban5` is not missing
 
 Again, we use TVD as our test statistic
 
