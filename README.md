@@ -163,15 +163,32 @@ Below is the observed distribution of `side` when `ban5` is missing and not miss
 | Blue   |                0.50005 |              0.491803 |
 | Red    |                0.49995 |              0.508197 |
 
-After performing a permutation test, the observed TVD (0.01) has a p-value of 0.732. Below shows the empirical distribution of the TVD for this test.
+After performing a permutation test, the observed TVD (0.01) has a p-value of 0.685. Below shows the empirical distribution of the TVD for this test.
 
 <iframe src="assets/tvd2.html" width=630 height=420 frameBorder=0></iframe>
 
-Since the p-value is greater than 0.05, we fail to reject the null hypothesis, and this test does not provide evidence that missing ban5 is related to whether a team is on the red side or blue side. Therefore, the missingness in the `ban5` column does depend on `side`.
+Since the p-value is greater than the 0.05 significance level, we fail to reject the null hypothesis, and this test does not provide evidence that missing ban5 is related to whether a team is on the red side or blue side. Therefore, the missingness in the `ban5` column does depend on `side`.
 
 ---
 
 ## Hypothesis Testing
 
+As we saw earlier, the distribution of KDA differs between positions. Bot laners have higher-than-average kill counts, and supports have higher-than-average assist counts. However, the death count averages for each position are comparatively more uniform.
+
+<iframe src="assets/KDA_bar.html" width=630 height=420 frameBorder=0></iframe>
+
+Is there a significant difference in the death count distribution between positions? Since support players seem to have the highest average death count. We test these hypotheses with a 0.05 significance level:
+
+- H0: The population mean death count for supports is equal to the population mean death count for non-supports
+
+- H1: The population mean death count for supports is greater than the population mean death count for non-supports
+
+Test statistic: the difference in mean death count (support - non-support)
+
+After performing a permutation test, the observed test statistic (0.82) has a p-value of 0. Below shows the empirical distribution of the difference in mean death counts
+
+<iframe src="assets/meandiff.html" width=630 height=420 frameBorder=0></iframe>
+
+Since the p-value is less than the 0.05 significance level, we reject the null hypothesis, and there is strong evidence suggesting that supports have a higher average death count than non-supports
 
 ---
