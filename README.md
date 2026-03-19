@@ -24,7 +24,7 @@ To a new audience, competitive League of Legends may look chaotic on the surface
 
 This project will investigate the question:
 
-## **Is there a difference in the distribution of post-game statistics between different positions?**
+## **Is there a difference in the distribution of post-game statistics between positions, and which statistics most clearly distinguish each role?**
 
 If post‑game stats do differ meaningfully by position, then we can identify which metrics are most distinctive for each role — helping players understand what truly defines their position and make more informed decisions about how to improve.
 
@@ -189,15 +189,21 @@ After performing a permutation test, the observed test statistic (0.82) has a p-
 
 <iframe src="assets/meandiff.html" width=630 height=420 frameBorder=0></iframe>
 
-Since the p-value is less than the 0.05 significance level, we reject the null hypothesis, and there is strong evidence suggesting that supports have a higher average death count than non-supports
+Since the p-value is less than the 0.05 significance level, we reject the null hypothesis, and there is strong evidence suggesting that supports have a higher average death count than non-supports. This result directly advances the goal of answering our overarching question, as it identifies death count as a statistic that differs between positions
 
 ---
 
 ## Framing a Prediction Problem
 
+To further answer our question and find the statistics that most clearly distinguish each role, we will build a classifier model to **predict which role a player played given their post-game data**.
 
+- **Type**: multiclass classification
 
+- **Response variable**: 'position' (top, jng, mid, bot, sup)
 
+- **Time of prediction**: post-game (all data avaliable)
+
+- **Evaluation metric**: macro F1 score (forces the model to be good across all five roles, not just the easy ones)
 
 
 ---
